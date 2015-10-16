@@ -10,7 +10,7 @@ mvn install:install-file \
 	-Dfile=./lib/hadoop-common-2.4.0.jar \
 	-DgroupId=org.apache.hadoop \
 	-DartifactId=hadoop-common \
-	-Dversion=aaa2.4.0-local \
+	-Dversion=2.4.0-local \
 	-Dpackaging=jar \
 	-DgeneratePom=true
 
@@ -18,6 +18,6 @@ mvn install:install-file \
 	-Dfile=./lib/hadoop-mapreduce-client-core-2.4.0.jar \
 	-DgroupId=org.apache.hadoop \
 	-DartifactId=hadoop-mapreduce-client-core \
-	-Dversion=aaa2.4.0-local \
+	-Dversion=2.4.0-local \
 	-Dpackaging=jar \
 	-DgeneratePom=true
