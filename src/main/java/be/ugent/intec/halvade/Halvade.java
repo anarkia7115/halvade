@@ -40,7 +40,7 @@ public class Halvade {
         int res = 0;
         try {
             Configuration c = new Configuration();
-            MapReduceRunner runner = new MapReduceRunner();
+            MapReduceRunnerWithEasyReducer runner = new MapReduceRunnerWithEasyReducer();
             res = ToolRunner.run(c, runner, args);
         } catch (Exception ex) {
             Logger.EXCEPTION(ex);
