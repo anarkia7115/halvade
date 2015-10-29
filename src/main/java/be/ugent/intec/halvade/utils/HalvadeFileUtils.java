@@ -301,14 +301,23 @@ public class HalvadeFileUtils {
     protected static String downloadAlignerIndex(TaskInputOutputContext context, String id, String refName, String refSuffix, String[] refFiles) throws IOException, URISyntaxException {
         Configuration conf = context.getConfiguration();
         String refDir = HalvadeConf.getRefDirOnScratch(conf);
+        // debug
+        System.out.println("refDir: " + refDir);
+        System.out.println("updated?");
         if(!refDir.endsWith("/")) refDir = refDir + "/";
         HalvadeFileLock lock = new HalvadeFileLock(context, refDir, REF_LOCK);
         String refBase = null;
         try {
             lock.getLock();
+            
+            // debug
+            System.out.println("in downloadAlignerIndex");
 
             ByteBuffer bytes = ByteBuffer.allocate(4);
+            
+            System.out.println("before if: ");
             if (lock.read(bytes) > 0) {
+            	System.out.println("after if: ");
                 bytes.flip();
                 long val = bytes.getInt();
                 if(val == REF_BOTH)
@@ -323,6 +332,9 @@ public class HalvadeFileUtils {
                         refBase = refDir + refName + id; // refName = bwa_ref-
 
                     for (String suffix : refFiles) { //  refFiles = BWA_REF_FILES
+                    	// debug
+                    	System.out.println("attemp download ref");
+                    	System.out.println("HDFSRef + suffix: " + HDFSRef + suffix);
                         attemptDownloadFileFromHDFS(context, fs, HDFSRef + suffix, refBase + suffix, RETRIES);                
                     }
                     Logger.INFO("FINISHED downloading the complete reference index to local scratch");

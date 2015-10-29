@@ -115,6 +115,7 @@ public class HalvadeOptions {
 
     public int GetOptions(String[] args, Configuration hConf) throws IOException, URISyntaxException {
         try {
+        	System.out.println("in GetOptions");
             boolean result = parseArguments(args, hConf);
             if (!result) {
                 HelpFormatter formatter = new HelpFormatter();
@@ -126,10 +127,15 @@ public class HalvadeOptions {
             onedec = new DecimalFormat("###0.0");
             // add parameters to configuration:
             if (localRefDir == null) {
+            	// debug
+            	System.out.println("localRefDir is empty");
                 localRefDir = tmpDir;
             }
+            // debug
+            System.out.println("localRefDir: " + localRefDir);
             HalvadeConf.setScratchTempDir(hConf, tmpDir);
             HalvadeConf.setRefDirOnScratch(hConf, localRefDir);
+            System.out.println("ref: "+ ref);
             HalvadeConf.setRefOnHDFS(hConf, ref);
             if (STARGenome != null) {
                 HalvadeConf.setStarDirOnHDFS(hConf, STARGenome);

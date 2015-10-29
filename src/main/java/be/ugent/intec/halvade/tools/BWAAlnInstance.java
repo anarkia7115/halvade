@@ -94,6 +94,9 @@ public class BWAAlnInstance extends AlignerInstance {
         }
         int threadsToUse = threads;
         if (isPaired && threadsToUse > 1 ) threadsToUse /= 2;
+        
+        // debug
+        System.out.println("ref in instancd: " + ref);
         String[] command1 = CommandGenerator.bwaAln(bin, ref, "/dev/stdin", getFileName(tmpdir, taskId, true, 1), threadsToUse, alnCustomArgs);
         reads1 = new ProcessBuilderWrapper(command1, bin);
         reads1.setThreads(threadsToUse);

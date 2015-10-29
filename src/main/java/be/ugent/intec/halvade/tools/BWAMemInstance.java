@@ -18,11 +18,16 @@
 package be.ugent.intec.halvade.tools;
 
 import be.ugent.intec.halvade.hadoop.mapreduce.HalvadeCounters;
+
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.apache.hadoop.mapreduce.Mapper;
+
 import be.ugent.intec.halvade.utils.*;
+
 import java.net.URISyntaxException;
+
 import org.apache.hadoop.mapreduce.Mapper.Context;
 
 /**
@@ -43,6 +48,8 @@ public class BWAMemInstance extends AlignerInstance {
         String taskid = context.getTaskAttemptID().toString();
         taskid = taskid.substring(taskid.indexOf("m_"));
         ref = HalvadeFileUtils.downloadBWAIndex(context, taskid);
+        // debug
+        System.out.println("ref: " + ref);
     }
     
     public int feedLine(String line) throws IOException  {
@@ -57,6 +64,14 @@ public class BWAMemInstance extends AlignerInstance {
         pbw = new ProcessBuilderWrapper(command, bin);
         // run command
         // needs to be streamed to output otherwise the process blocks ...
+        
+        // debug
+        for(String s : command) {
+        	
+        	System.out.println(s);
+        }
+        
+        System.out.println("process command: " + command);
         pbw.startProcess(null, System.err);
         // check if alive.
         if(!pbw.isAlive())

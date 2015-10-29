@@ -60,6 +60,7 @@ public class MapReduceRunner extends Configured implements Tool  {
         try {
             Configuration halvadeConf = getConf();
             halvadeOpts = new HalvadeOptions();
+            System.out.println("Ready to run GetOptions");
             int optReturn = halvadeOpts.GetOptions(strings, halvadeConf);
             if (optReturn != 0) return optReturn;
             
@@ -99,6 +100,8 @@ public class MapReduceRunner extends Configured implements Tool  {
         HalvadeConf.setIsPass2(pass1Conf, false);
         HalvadeResourceManager.setJobResources(halvadeOpts, pass1Conf, HalvadeResourceManager.RNA_SHMEM_PASS1, true, halvadeOpts.useBamInput);
         Job pass1Job = Job.getInstance(pass1Conf, "Halvade pass 1 RNA pipeline");
+        
+
         pass1Job.addCacheArchive(new URI(halvadeOpts.halvadeBinaries));
         pass1Job.setJarByClass(be.ugent.intec.halvade.hadoop.mapreduce.HalvadeMapper.class);
         FileSystem fs = FileSystem.get(new URI(halvadeOpts.in), pass1Conf);
@@ -152,7 +155,10 @@ public class MapReduceRunner extends Configured implements Tool  {
     }
     
     protected int runHalvadeJob(Configuration halvadeConf, String tmpOutDir, int jobType) throws IOException, URISyntaxException, InterruptedException, ClassNotFoundException {
-        String pipeline = "";
+
+    	System.out.println("in runHalvadeJob");
+    	
+    	String pipeline = "";
         if(jobType == HalvadeResourceManager.RNA_SHMEM_PASS2) {
             HalvadeConf.setIsPass2(halvadeConf, true);
             HalvadeResourceManager.setJobResources(halvadeOpts, halvadeConf, jobType, false, halvadeOpts.useBamInput);
@@ -172,6 +178,10 @@ public class MapReduceRunner extends Configured implements Tool  {
             setHeaderFile(halvadeOpts.in, halvadeConf);
         
         Job halvadeJob = Job.getInstance(halvadeConf, "Halvade" + pipeline);
+
+        // debug
+        System.out.println("CacheArchive: " + halvadeOpts.halvadeBinaries);
+        
         halvadeJob.addCacheArchive(new URI(halvadeOpts.halvadeBinaries));
         halvadeJob.setJarByClass(be.ugent.intec.halvade.hadoop.mapreduce.HalvadeMapper.class);
         addInputFiles(halvadeOpts.in, halvadeConf, halvadeJob);
@@ -217,7 +227,9 @@ public class MapReduceRunner extends Configured implements Tool  {
     }
     
     protected int runCombineJob(String halvadeOutDir, String mergeOutDir, boolean featureCount) throws IOException, URISyntaxException, InterruptedException, ClassNotFoundException {
-        Configuration combineConf = getConf();
+    	System.out.println("in runCombineJob");
+    	
+    	Configuration combineConf = getConf();
         if(!halvadeOpts.out.endsWith("/")) halvadeOpts.out += "/";  
         HalvadeConf.setInputDir(combineConf, halvadeOutDir);
         HalvadeConf.setOutDir(combineConf, mergeOutDir);
@@ -252,7 +264,9 @@ public class MapReduceRunner extends Configured implements Tool  {
     }
     
     protected int runTimedJob(Job job, String jobname) throws IOException, InterruptedException, ClassNotFoundException {
-        if(halvadeOpts.dryRun) 
+    	System.out.println("in runTimedJob");
+    	
+    	if(halvadeOpts.dryRun) 
             return 0;
         Logger.DEBUG("Started " + jobname);
         Timer timer = new Timer();

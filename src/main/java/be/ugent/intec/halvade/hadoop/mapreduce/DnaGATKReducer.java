@@ -14,7 +14,10 @@ import be.ugent.intec.halvade.utils.Logger;
 import be.ugent.intec.halvade.utils.HalvadeConf;
 import be.ugent.intec.halvade.utils.HalvadeFileUtils;
 import be.ugent.intec.halvade.utils.SAMRecordIterator;
+
 import org.seqdoop.hadoop_bam.SAMRecordWritable;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -36,6 +39,10 @@ public class DnaGATKReducer extends GATKReducer {
         boolean useElPrep = HalvadeConf.getUseElPrep(context.getConfiguration());
         ChromosomeRange r = new ChromosomeRange();
         SAMRecordIterator SAMit = new SAMRecordIterator(values.iterator(), header, r);
+        
+        // debug
+        //System.out.println("list Files;");
+        //listFiles();
         
         if(useElPrep && isFirstAttempt) 
             elPrepPreprocess(context, tools, SAMit, preprocess);
@@ -61,5 +68,5 @@ public class DnaGATKReducer extends GATKReducer {
         long estimatedTime = System.currentTimeMillis() - startTime;
         Logger.DEBUG("total estimated time: " + estimatedTime / 1000);
     }
-    
+
 }

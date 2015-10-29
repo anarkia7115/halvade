@@ -487,6 +487,8 @@ public class HalvadeConf {
         conf.set(customArgs + programName.toLowerCase() + "_" + toolName.toLowerCase(), val);
     }
     public static String getCustomArgs(Configuration conf, String programName, String toolName) {
+    	// debug
+    	//System.out.println("customArgs: " + customArgs);
         return conf.get(customArgs + programName.toLowerCase() + "_" + toolName.toLowerCase());
     }
 
